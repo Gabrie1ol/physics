@@ -18,13 +18,14 @@
       text-align: center;
       margin-bottom: 30px;
       color: #2c3e50;
+      font-weight: 300;
     }
     
     .simulation-container {
       background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 24px;
       margin-bottom: 20px;
     }
     
@@ -44,19 +45,42 @@
     .slider-label {
       display: flex;
       justify-content: space-between;
+      font-weight: 500;
     }
     
     input[type="range"] {
       width: 100%;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: #e0e0e0;
+      border-radius: 3px;
+      outline: none;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #3498db;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb:hover {
+      background: #2980b9;
     }
     
     .simulation-stage {
       position: relative;
-      height: 300px;
+      height: 320px;
       background-color: #000;
-      border-radius: 6px;
-      margin: 20px 0;
+      border-radius: 8px;
+      margin: 30px 0;
       overflow: hidden;
+      box-shadow: inset 0 0 40px rgba(0, 0, 255, 0.1);
     }
     
     .light-source {
@@ -68,19 +92,30 @@
       height: 40px;
       background-color: white;
       border-radius: 50%;
-      box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 30px 15px rgba(255, 255, 255, 0.7);
       z-index: 1;
+      animation: pulse 2s infinite alternate;
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.6);
+      }
+      100% {
+        box-shadow: 0 0 30px 15px rgba(255, 255, 255, 0.8);
+      }
     }
     
     .polarizer {
       position: absolute;
       top: 50%;
       width: 10px;
-      height: 100px;
-      background-color: rgba(200, 200, 200, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.8);
+      height: 110px;
+      background-color: rgba(200, 200, 200, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.9);
       transform: translateY(-50%);
       z-index: 2;
+      transition: background-color 0.3s;
     }
     
     .polarizer-1 {
@@ -96,25 +131,21 @@
       height: 5px;
       top: 50%;
       transform: translateY(-50%);
-      background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.7));
       z-index: 0;
+      transition: background 0.5s;
     }
     
-    .beam-1 {
+    /* Full beam that spans the entire length */
+    .full-beam {
       left: 60px;
-      width: 60px;
-    }
-    
-    .beam-2 {
-      left: 130px;
-      width: 120px;
-      opacity: 0.5; /* 50% intensity after first polarizer */
-    }
-    
-    .beam-3 {
-      left: 260px;
-      width: 140px;
-      opacity: 0.5; /* Will be updated dynamically */
+      right: 110px; /* Ending before the light meter */
+      background: linear-gradient(to right, 
+        rgba(255, 255, 255, 1) 0%, 
+        rgba(255, 255, 255, 1) 60px, /* Full intensity until first polarizer */
+        rgba(255, 255, 255, 0.5) 60px, /* 50% after first polarizer */
+        rgba(255, 255, 255, 0.5) 190px, /* Maintain 50% until second polarizer */
+        rgba(255, 255, 255, 0.5) 190px /* Will be dynamically updated */);
+      box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.3);
     }
     
     .light-meter {
@@ -124,14 +155,15 @@
       transform: translateY(-50%);
       width: 80px;
       height: 120px;
-      background-color: #444;
-      border-radius: 6px;
-      border: 2px solid #666;
+      background-color: #333;
+      border-radius: 8px;
+      border: 2px solid #555;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 3;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
     
     .light-meter-display {
@@ -145,6 +177,7 @@
       justify-content: center;
       margin-bottom: 10px;
       overflow: hidden;
+      border: 1px solid #444;
     }
     
     .light-intensity {
@@ -153,22 +186,26 @@
       color: #0f0;
       line-height: 1.4;
       text-align: center;
+      text-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
+      transition: color 0.3s;
     }
     
     .light-meter-label {
       font-size: 12px;
       color: #ddd;
       text-transform: uppercase;
+      letter-spacing: 1px;
     }
     
     .polarizer-label {
       position: absolute;
-      top: 105px;
+      top: 115px;
       color: white;
       font-size: 12px;
       text-align: center;
       width: 100px;
       left: -45px;
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
     }
     
     .polarizer-lines {
@@ -179,6 +216,7 @@
       flex-direction: column;
       justify-content: space-evenly;
       align-items: center;
+      transition: transform 0.3s;
     }
     
     .polarizer-line {
@@ -189,96 +227,67 @@
     
     .explanation {
       background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 24px;
       margin-top: 30px;
     }
     
     .explanation h2 {
       margin-top: 0;
       color: #2c3e50;
+      font-weight: 500;
     }
     
-    .light-strength-indicator {
+    .intensity-indicators {
       position: absolute;
-      bottom: 40px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: black;
-      font-size: 12px;
-      font-weight: bold;
-      border-radius: 10px;
-    }
-    
-    .strength-indicator-1 {
+      bottom: 20px;
       left: 60px;
-      width: 60px;
-      background-color: rgba(255, 255, 255, 0.8);
-    }
-    
-    .strength-indicator-2 {
-      left: 130px;
-      width: 60px; /* 50% of original width to show reduction */
-      background-color: rgba(255, 255, 255, 0.8);
-    }
-    
-    .strength-indicator-3 {
-      left: 260px;
-      width: 70px; /* Will be updated dynamically */
-      background-color: rgba(255, 255, 255, 0.8);
-    }
-    
-    .numeric-display {
-      position: absolute;
-      bottom: 10px;
-      font-family: monospace;
-      color: white;
-      font-size: 14px;
-      text-align: center;
-    }
-    
-    .numeric-display-1 {
-      left: 60px;
-      width: 60px;
-    }
-    
-    .numeric-display-2 {
-      left: 160px;
-      width: 60px;
-    }
-    
-    .numeric-display-3 {
-      left: 300px;
-      width: 60px;
-    }
-    
-    .data-panel {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: #f0f0f0;
-      border-radius: 6px;
-      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-    
-    .data-panel h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      color: #2c3e50;
-    }
-    
-    .data-row {
+      right: 110px;
       display: flex;
       justify-content: space-between;
-      margin-bottom: 5px;
-      padding: 5px 0;
-      border-bottom: 1px solid #ddd;
     }
     
-    .data-row:last-child {
-      border-bottom: none;
+    .intensity-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 12px;
+      text-shadow: 0 0 2px rgba(0, 0, 0, 1);
+    }
+    
+    .formula-display {
+      position: absolute;
+      top: 20px;
+      right: 130px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 12px;
+      border-radius: 8px;
+      color: white;
+      font-family: 'Times New Roman', serif;
+      font-style: italic;
+      font-size: 16px;
+    }
+    
+    .formula-result {
+      margin-top: 5px;
+      font-family: monospace;
+      font-style: normal;
+      font-size: 14px;
+      color: #00ff00;
+    }
+    
+    .angle-display {
+      position: absolute;
+      top: 20px;
+      left: 260px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: white;
+      font-family: monospace;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -298,9 +307,8 @@
     <div class="simulation-stage">
       <div class="light-source"></div>
       
-      <div class="light-beam beam-1"></div>
-      <div class="light-strength-indicator strength-indicator-1">100%</div>
-      <div class="numeric-display numeric-display-1">1000 lm</div>
+      <!-- Single continuous beam -->
+      <div class="light-beam full-beam" id="continuous-beam"></div>
       
       <div class="polarizer polarizer-1">
         <div class="polarizer-lines">
@@ -313,10 +321,6 @@
         <div class="polarizer-label">Fixed Polarizer</div>
       </div>
       
-      <div class="light-beam beam-2" id="middle-beam"></div>
-      <div class="light-strength-indicator strength-indicator-2" id="middle-strength">50%</div>
-      <div class="numeric-display numeric-display-2" id="middle-numeric">500 lm</div>
-      
       <div class="polarizer polarizer-2" id="rotating-polarizer">
         <div class="polarizer-lines" id="rotating-lines">
           <div class="polarizer-line"></div>
@@ -328,73 +332,61 @@
         <div class="polarizer-label">Rotating Polarizer</div>
       </div>
       
-      <div class="light-beam beam-3" id="final-beam"></div>
-      <div class="light-strength-indicator strength-indicator-3" id="final-strength">50%</div>
-      <div class="numeric-display numeric-display-3" id="final-numeric">500 lm</div>
-      
       <div class="light-meter">
         <div class="light-meter-display">
           <div class="light-intensity" id="intensity-value">50%<br>500 lm</div>
         </div>
         <div class="light-meter-label">Intensity</div>
       </div>
-    </div>
-    
-    <div class="data-panel">
-      <h3>Light Data</h3>
-      <div class="data-row">
-        <span>Initial Light:</span>
-        <span>100% (1000 lumens)</span>
+      
+      <div class="intensity-indicators">
+        <div class="intensity-indicator">
+          <div>100%</div>
+          <div>1000 lm</div>
+        </div>
+        <div class="intensity-indicator">
+          <div>50%</div>
+          <div>500 lm</div>
+        </div>
+        <div class="intensity-indicator">
+          <div id="final-intensity">50%</div>
+          <div id="final-lumens">500 lm</div>
+        </div>
       </div>
-      <div class="data-row">
-        <span>After First Polarizer:</span>
-        <span>50% (500 lumens)</span>
+      
+      <div class="formula-display">
+        I = I₁·cos²(θ)
+        <div class="formula-result" id="malus-calculation">I = 500 × 1.000 = 500 lm</div>
       </div>
-      <div class="data-row">
-        <span>After Second Polarizer:</span>
-        <span id="final-intensity-data">50% (500 lumens)</span>
-      </div>
-      <div class="data-row">
-        <span>Angle Between Polarizers:</span>
-        <span id="angle-data">0°</span>
-      </div>
-      <div class="data-row">
-        <span>cos²(θ):</span>
-        <span id="cosine-data">1.000</span>
-      </div>
-      <div class="data-row">
-        <span>Final Intensity Calculation:</span>
-        <span id="calculation-data">50% × 1.000 = 50% (500 lm)</span>
+      
+      <div class="angle-display" id="angle-display">
+        θ = 0°
       </div>
     </div>
   </div>
   
   <div class="explanation">
     <h2>How It Works</h2>
-    <p>הדמיה זו מדגימה כיצד אור מקוטב מתנהג כאשר הוא עובר דרך מסנני קיטוב בזוויות שונות:</p>
+    <p>הדמיה זו מדגימה את חוק מאלוס (Malus's Law), המתאר כיצד אור מקוטב מתנהג כאשר הוא עובר דרך מסנני קיטוב בזוויות שונות:</p>
     <ul>
-      <li>מקור האור הלבן פולט אור לא מקוטב בעוצמה של 100% (1000 לומן), בדומה לנורת ליבון ביתית סטנדרטית.</li>
-      <li>המקטב הראשון קבוע ב-0° (אנכי), ומאפשר רק לאור מקוטב אנכית לעבור דרכו. מכיוון שאור לא מקוטב האנרגיה שלו מפוזרת לכל הכיוונים, רק כ-50% (500 לומן) עוברים דרך המקטב הראשון.</li>
+      <li>מקור האור הלבן פולט אור לא מקוטב בעוצמה של 100% (1000 לומן).</li>
+      <li>המקטב הראשון קבוע ב-0° (אנכי), ומאפשר רק לאור מקוטב אנכית לעבור דרכו. רק כ-50% (500 לומן) עוברים דרך המקטב הראשון.</li>
       <li>ניתן לסובב את המקטב השני בין 0° ל-90° באמצעות המחוון.</li>
-      <li>עוצמת האור לאחר המקטב השני מלווה את חוק מאלוס: I = I₁ cos²(θ), כאשר I₁ היא העוצמה שלאחר המקטב הראשון (50% או 500 לומן) ו-θ היא הזווית בין המקטבים.</li>
+      <li><strong>חוק מאלוס</strong>: עוצמת האור לאחר המקטב השני מחושבת לפי I = I₁·cos²(θ), כאשר I₁ היא העוצמה שלאחר המקטב הראשון (50% או 500 לומן) ו-θ היא הזווית בין המקטבים.</li>
     </ul>
-    <p>כאשר שני המקטבים מיושרים (0°), האור המרבי עובר דרך המקטב השני (50% או 500 לומן מהמקור). כאשר הם מאונכים (90°), שום אור לא עובר דרך המקטב השני.</p>
+    <p>כאשר שני המקטבים מיושרים (0°), עובר אור מרבי. כאשר הם מאונכים (90°), לא עובר אור כלל (extinction).</p>
   </div>
 
   <script>
     const angleSlider = document.getElementById('angle-slider');
     const angleValue = document.getElementById('angle-value');
     const intensityValue = document.getElementById('intensity-value');
-    const rotatingPolarizer = document.getElementById('rotating-polarizer');
     const rotatingLines = document.getElementById('rotating-lines');
-    const finalBeam = document.getElementById('final-beam');
-    const finalStrength = document.getElementById('final-strength');
-    const finalNumeric = document.getElementById('final-numeric');
-    const finalIntensityData = document.getElementById('final-intensity-data');
-    const angleData = document.getElementById('angle-data');
-    const cosineData = document.getElementById('cosine-data');
-    const calculationData = document.getElementById('calculation-data');
-    const middleNumeric = document.getElementById('middle-numeric');
+    const continuousBeam = document.getElementById('continuous-beam');
+    const finalIntensity = document.getElementById('final-intensity');
+    const finalLumens = document.getElementById('final-lumens');
+    const malusCalculation = document.getElementById('malus-calculation');
+    const angleDisplay = document.getElementById('angle-display');
 
     // Initial light source in lumens (similar to a standard light bulb)
     const initialLumens = 1000;
@@ -409,47 +401,49 @@
     function updateSimulation() {
       const angle = parseInt(angleSlider.value);
       angleValue.textContent = angle + '°';
-      angleData.textContent = angle + '°';
+      angleDisplay.textContent = `θ = ${angle}°`;
       
       // Rotate the second polarizer
       rotatingLines.style.transform = `rotate(${angle}deg)`;
       
       // Calculate light intensity using Malus's Law
       const cosineSquared = Math.cos(angle * Math.PI / 180) ** 2;
-      const finalIntensity = initialIntensity * cosineSquared;
-      const finalIntensityPercent = Math.round(finalIntensity * 100);
-      const finalLumens = Math.round(afterFirstPolarizer * cosineSquared);
+      const finalIntensityValue = initialIntensity * cosineSquared;
+      const finalIntensityPercent = Math.round(finalIntensityValue * 100);
+      const finalLumensValue = Math.round(afterFirstPolarizer * cosineSquared);
       const cosineSquaredThreeDecimal = cosineSquared.toFixed(3);
       
+      // Update the continuous beam gradient
+      continuousBeam.style.background = `linear-gradient(to right, 
+        rgba(255, 255, 255, 1) 0%, 
+        rgba(255, 255, 255, 1) 60px, 
+        rgba(255, 255, 255, 0.5) 60px, 
+        rgba(255, 255, 255, 0.5) 190px, 
+        rgba(255, 255, 255, ${finalIntensityValue}) 190px, 
+        rgba(255, 255, 255, ${finalIntensityValue}) 100%)`;
+      
       // Update intensity displays
-      intensityValue.innerHTML = `${finalIntensityPercent}%<br>${finalLumens} lm`;
-      finalStrength.textContent = finalIntensityPercent + '%';
-      finalNumeric.textContent = finalLumens + ' lm';
-      finalIntensityData.textContent = `${finalIntensityPercent}% (${finalLumens} lumens)`;
-      cosineData.textContent = cosineSquaredThreeDecimal;
-      calculationData.textContent = `50% × ${cosineSquaredThreeDecimal} = ${finalIntensityPercent}% (${finalLumens} lm)`;
+      intensityValue.innerHTML = `${finalIntensityPercent}%<br>${finalLumensValue} lm`;
+      finalIntensity.textContent = finalIntensityPercent + '%';
+      finalLumens.textContent = finalLumensValue + ' lm';
       
-      // Update light beam opacity
-      finalBeam.style.opacity = finalIntensity;
-      
-      // Update strength indicator width based on intensity
-      // The max width should be 70px (half of original 140px for 50% max intensity)
-      const maxWidth = 70;
-      finalStrength.style.width = (maxWidth * cosineSquared) + 'px';
+      // Update Malus's Law calculation
+      malusCalculation.textContent = `I = 500 × ${cosineSquaredThreeDecimal} = ${finalLumensValue} lm`;
       
       // Update colors based on intensity relative to the maximum possible (50%)
       const relativeIntensity = finalIntensityPercent / 50; // normalize to 0-1 range
       
       if (relativeIntensity > 0.7) {
         intensityValue.style.color = '#0f0'; // Green for high intensity
-        finalStrength.style.backgroundColor = 'rgba(0, 255, 0, 0.8)';
       } else if (relativeIntensity > 0.3) {
         intensityValue.style.color = '#ff0'; // Yellow for medium intensity
-        finalStrength.style.backgroundColor = 'rgba(255, 255, 0, 0.8)';
       } else {
         intensityValue.style.color = '#f00'; // Red for low intensity
-        finalStrength.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
       }
+      
+      // Also update the beam glow based on intensity
+      const glowIntensity = Math.max(0.1, finalIntensityValue * 0.5);
+      continuousBeam.style.boxShadow = `0 0 8px ${glowIntensity * 8}px rgba(255, 255, 255, ${glowIntensity})`;
     }
 
     // Initialize simulation
