@@ -334,7 +334,7 @@
       
       <div class="light-meter">
         <div class="light-meter-display">
-          <div class="light-intensity" id="intensity-value">50%<br>500 W/m²</div>
+          <div class="light-intensity" id="intensity-value">50%<br>500 µW</div>
         </div>
         <div class="light-meter-label">Intensity</div>
       </div>
@@ -342,21 +342,21 @@
       <div class="intensity-indicators">
         <div class="intensity-indicator">
           <div>100%</div>
-          <div>1000 W/m²</div>
+          <div>1000 µW</div>
         </div>
         <div class="intensity-indicator">
           <div>50%</div>
-          <div>500 W/m²</div>
+          <div>500 µW</div>
         </div>
         <div class="intensity-indicator">
           <div id="final-intensity">50%</div>
-          <div id="final-lumens">500 W/m²</div>
+          <div id="final-lumens">500 µW</div>
         </div>
       </div>
       
       <div class="formula-display">
         I = I₁·cos²(θ)
-        <div class="formula-result" id="malus-calculation">I = 500 × 1.000 = 500 W/m²</div>
+        <div class="formula-result" id="malus-calculation">I = 500 × 1.000 = 500 µW</div>
       </div>
       
       <div class="angle-display" id="angle-display">
@@ -369,10 +369,10 @@
     <h2>How It Works</h2>
     <p>הדמיה זו מדגימה את חוק מאלוס (Malus's Law), המתאר כיצד אור מקוטב מתנהג כאשר הוא עובר דרך מסנני קיטוב בזוויות שונות:</p>
     <ul>
-      <li>מקור האור הלבן פולט אור לא מקוטב בעוצמה של 100% (1000 W/m²).</li>
-      <li>המקטב הראשון קבוע ב-0° (אנכי), ומאפשר רק לאור מקוטב אנכית לעבור דרכו. רק כ-50% (500 W/m²) עוברים דרך המקטב הראשון.</li>
+      <li>מקור האור הלבן פולט אור לא מקוטב בעוצמה של 100% (1000 µW).</li>
+      <li>המקטב הראשון קבוע ב-0° (אנכי), ומאפשר רק לאור מקוטב אנכית לעבור דרכו. רק כ-50% (500 µW) עוברים דרך המקטב הראשון.</li>
       <li>ניתן לסובב את המקטב השני בין 0° ל-90° באמצעות המחוון.</li>
-      <li><strong>חוק מאלוס</strong>: עוצמת האור לאחר המקטב השני מחושבת לפי I = I₁·cos²(θ), כאשר I₁ היא העוצמה שלאחר המקטב הראשון (50% או 500 W/m²) ו-θ היא הזווית בין המקטבים.</li>
+      <li><strong>חוק מאלוס</strong>: עוצמת האור לאחר המקטב השני מחושבת לפי I = I₁·cos²(θ), כאשר I₁ היא העוצמה שלאחר המקטב הראשון (50% או 500 µW) ו-θ היא הזווית בין המקטבים.</li>
     </ul>
     <p>כאשר שני המקטבים מיושרים (0°), עובר אור מרבי. כאשר הם מאונכים (90°), לא עובר אור כלל (extinction).</p>
   </div>
@@ -388,7 +388,7 @@
     const malusCalculation = document.getElementById('malus-calculation');
     const angleDisplay = document.getElementById('angle-display');
 
-    // Initial light source in W/m² (similar to a standard light bulb)
+    // Initial light source in µW (changed from W/m²)
     const initialLumens = 1000;
     
     // Initial intensity after first polarizer (50%)
@@ -423,12 +423,12 @@
         rgba(255, 255, 255, ${finalIntensityValue}) 100%)`;
       
       // Update intensity displays
-      intensityValue.innerHTML = `${finalIntensityPercent}%<br>${finalLumensValue} W/m²`;
+      intensityValue.innerHTML = `${finalIntensityPercent}%<br>${finalLumensValue} µW`;
       finalIntensity.textContent = finalIntensityPercent + '%';
-      finalLumens.textContent = finalLumensValue + ' W/m²';
+      finalLumens.textContent = finalLumensValue + ' µW';
       
       // Update Malus's Law calculation
-      malusCalculation.textContent = `I = 500 × ${cosineSquaredThreeDecimal} = ${finalLumensValue} W/m²`;
+      malusCalculation.textContent = `I = 500 × ${cosineSquaredThreeDecimal} = ${finalLumensValue} µW`;
       
       // Update colors based on intensity relative to the maximum possible (50%)
       const relativeIntensity = finalIntensityPercent / 50; // normalize to 0-1 range
